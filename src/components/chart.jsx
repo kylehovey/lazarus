@@ -31,7 +31,7 @@ const serializePoints = (data) => Object.entries(data)
     ],
   )
   .sort(([ A ], [ B ]) => A - B)
-  .filter(([ A ]) => A > threeMonthsAgo);
+  .filter(([ A ]) => A > oneYearAgo);
 
 class Chart extends React.Component {
   static propTypes = {
@@ -132,8 +132,13 @@ class Chart extends React.Component {
           enableDragZoom
           onTimeRangeChanged={handleTimeRangeChange}
         >
-          <ChartRow height="350">
-            <YAxis id="value" min={min} max={max} />
+          <ChartRow height="200">
+            <YAxis
+              id="value"
+              min={min}
+              max={max}
+              showGrid
+            />
             <Charts>
               {this.charts}
             </Charts>

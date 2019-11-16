@@ -38,11 +38,14 @@ class App extends React.Component {
     )
   }
 
+  resetTimeRange = () => this.setState({ timerange: null });
+
   render() {
     const { timerange } = this.state;
 
     return (
       <div>
+        <button onClick={this.resetTimeRange}>Reset Time Range</button>
         {this.state.charts.map(({ key }) => (
           <Chart
             onRemove={() => this.removeChart(key)} key={key}
