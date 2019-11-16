@@ -45,6 +45,7 @@ class App extends React.Component {
 
     return (
       <div>
+        <h1>Lazarus Health Visualizer</h1>
         <button onClick={this.resetTimeRange}>Reset Time Range</button>
         {this.state.charts.map(({ key }) => (
           <Chart

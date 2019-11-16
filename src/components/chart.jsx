@@ -57,6 +57,7 @@ class Chart extends React.Component {
     if (!selection.includes(value)) {
       this.setState({
         selection: [ ...selection, value ],
+        value: '',
       });
     }
   }
@@ -170,9 +171,9 @@ class Chart extends React.Component {
         <input onChange={this.changeMin} value={min} />
         <span>Max:</span>
         <input onChange={this.changeMax} value={max} />
+        <button onClick={onRemove}>Remove</button>
         {this.resultsFor(value)}
         {this.display}
-        <button onClick={onRemove}>Remove</button>
       </div>
     );
   }

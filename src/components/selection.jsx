@@ -20,17 +20,21 @@ export default class SearchResult extends React.Component {
 
   get listItems() {
     return this.props.selection
-      .map(selected => <li key={`selection-${selected}`}>{selected}</li>);
+      .map(selected => (
+        <span 
+          key={`selection-${selected}`}
+          className="selection-item"
+        >
+          {selected}
+        </span>
+      ));
   }
 
   render() {
     return (
-      <div>
-        <h2>Selected:</h2>
+      <div className="selection">
         {this.emptyMessage}
-        <ul>
-          {this.listItems}
-        </ul>
+        {this.listItems}
       </div>
     );
   }

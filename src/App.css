@@ -1,0 +1,33 @@
+body {
+  background-color: #ffffe7;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.selection {
+  display: inline-block;
+  margin: 5px;
+}
+
+.selection-item {
+  margin-left: 5px;
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+button {
+  width: 100px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 5px;
+  background-color: #e0cae8;
+}
+
+input {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+a {
+  text-decoration: none;
+  font-weight: bold;
+}
