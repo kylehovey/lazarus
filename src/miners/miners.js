@@ -1,8 +1,5 @@
 import HealthData from '../data/health.json';
 
-// TODO: Delete this
-window.HealthData = HealthData;
-
 const binnedByDay = (data) => data.reduce(
   (bins, point) => {
     const [ date ] = point["startDate"].split(" ");
