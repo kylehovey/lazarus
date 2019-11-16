@@ -12,7 +12,7 @@ export default class SearchResult extends React.Component {
 
     e.preventDefault();
 
-    this.props.onSelect(value);
+    onSelect(value);
 
     return false;
   }

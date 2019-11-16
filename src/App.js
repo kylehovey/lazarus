@@ -1,73 +1,56 @@
 import React from 'react';
 import './App.css';
-import {
-    Charts,
-    ChartContainer,
-    ChartRow,
-    YAxis,
-    LineChart
-} from "react-timeseries-charts";
 
-import miners from './miners/miners';
-import SearchResult from './components/search_result';
-import Selection from './components/selection';
+import Chart from './components/chart';
 
-const available = miners.map(({ title }) => title);
-const lookup = new Map(
-  miners.map(({ title, ...rest }) => [ title, rest ]),
-);
+const uuid = () => parseInt(Math.random()*1e7, 27).toString();
 
 class App extends React.Component {
   state = {
-    value: '',
-    selection: [],
+    charts: [
+      {
+        key: 'chart-initial',
+        element: (
+          <Chart
+            onRemove={() => this.removeChart('chart-initial')}
+            key="chart-initial"
+          />
+        ),
+      },
+    ],
   };
 
-  onChange = ({ target: { value } }) => {
-    this.setState({ value });
-  };
+  removeChart = (removeKey) => {
+    const { charts } = this.state;
 
-  select = (value) => {
-    const { selection } = this.state;
-
-    if (!selection.includes(value)) {
-      this.setState({
-        selection: [ ...selection, value ],
-      });
-    }
+    this.setState({
+      charts: charts.filter(({ key }) => key !== removeKey),
+    });
   }
 
-  clear = () => this.setState({
-    value: '',
-    selection: [],
-  });
+  addChart = () => {
+    const key = `chart-${uuid()}`;
 
-  resultsFor(term) {
-    if (term === '') return null;
-
-    return available
-      .filter(
-        (title) => title.toLowerCase().includes(term.toLowerCase())
-      ).map(
-        (title, i) => (
-          <React.Fragment key={`result-${i}`}>
-            <br />
-            <SearchResult value={title} onSelect={this.select} />
-          </React.Fragment>
-        )
-      );
+    this.setState(
+      ({ charts }) => ({
+        charts: [
+          ...charts,
+          {
+            key,
+            element: (
+              <Chart onRemove={() => this.removeChart(key)} key={key} />
+            )
+          },
+        ],
+      })
+    )
   }
 
   render() {
-    const { value, selection } = this.state;
-
     return (
       <div>
-        <Selection selection={selection} />
-        <br />
-        <input onChange={this.onChange} value={value} />
-        <button onClick={this.clear}>Clear</button>
-        {this.resultsFor(value)}
+        {this.state.charts.map(({ element }) => element)}
+        <button onClick={this.addChart}>Add</button>
       </div>
     );
   }

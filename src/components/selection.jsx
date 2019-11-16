@@ -24,8 +24,6 @@ export default class SearchResult extends React.Component {
   }
 
   render() {
-    const { selection } = this.props;
-
     return (
       <div>
         <h2>Selected:</h2>
