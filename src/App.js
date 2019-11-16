@@ -1,8 +1,16 @@
 import React from 'react';
 import './App.css';
+import {
+    Charts,
+    ChartContainer,
+    ChartRow,
+    YAxis,
+    LineChart
+} from "react-timeseries-charts";
 
 import miners from './miners/miners';
 import SearchResult from './components/search_result';
+import Selection from './components/selection';
 
 const available = miners.map(({ title }) => title);
 const lookup = new Map(
@@ -12,6 +20,7 @@ const lookup = new Map(
 class App extends React.Component {
   state = {
     value: '',
+    selection: [],
   };
 
   onChange = ({ target: { value } }) => {
@@ -19,8 +28,19 @@ class App extends React.Component {
   };
 
   select = (value) => {
-    console.log(lookup.get(value).maker());
+    const { selection } = this.state;
+
+    if (!selection.includes(value)) {
+      this.setState({
+        selection: [ ...selection, value ],
+      });
+    }
   }
+
+  clear = () => this.setState({
+    value: '',
+    selection: [],
+  });
 
   resultsFor(term) {
     if (term === '') return null;
@@ -39,12 +59,14 @@ class App extends React.Component {
   }
 
   render() {
-    const { value } = this.state;
+    const { value, selection } = this.state;
 
     return (
       <div>
+        <Selection selection={selection} />
+        <br />
         <input onChange={this.onChange} value={value} />
-        <button onClick={this.select}>Add</button>
+        <button onClick={this.clear}>Clear</button>
         {this.resultsFor(value)}
       </div>
     );
