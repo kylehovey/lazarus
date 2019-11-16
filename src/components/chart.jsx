@@ -36,6 +36,8 @@ const serializePoints = (data) => Object.entries(data)
 class Chart extends React.Component {
   static propTypes = {
     onRemove: PropTypes.func,
+    onTimeRangeChanged: PropTypes.func,
+    timerange: PropTypes.object,
   };
 
   state = {
@@ -81,15 +83,14 @@ class Chart extends React.Component {
   }
 
   get series() {
+    const { timerange } = this.props;
     const { selection } = this.state;
 
-    return selection.map(
+    const series = selection.map(
       selected => ({
         key: selected,
         values: serializePoints(lookup.get(selected).maker()),
       })
-    ).map(
-      x => (console.log(x), x)
     ).map(
       ({ key, values }) => new TimeSeries({
         name: key,
@@ -97,6 +98,10 @@ class Chart extends React.Component {
         points: values,
       })
     );
+
+    return (timerange !== null)
+      ? series.map(s => s.crop(timerange))
+      : series;
   }
 
   get charts() {
@@ -107,13 +112,14 @@ class Chart extends React.Component {
           series={series}
           columns={["time", "value"]}
           interpolation="curveBasis"
-          width="60"
+          width={60}
         />
       )
     );
   }
 
   get display() {
+    const { handleTimeRangeChange } = this.props;
     const { min, max } = this.state;
     const [ series ] = this.series;
 
@@ -121,7 +127,11 @@ class Chart extends React.Component {
 
     return (
       <Resizable>
-        <ChartContainer timeRange={series.range()}>
+        <ChartContainer
+          timeRange={series.range()}
+          enableDragZoom
+          onTimeRangeChanged={handleTimeRangeChange}
+        >
           <ChartRow height="350">
             <YAxis id="value" min={min} max={max} />
             <Charts>

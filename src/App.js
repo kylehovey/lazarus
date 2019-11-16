@@ -8,17 +8,14 @@ const uuid = () => parseInt(Math.random()*1e7, 27).toString();
 class App extends React.Component {
   state = {
     charts: [
-      {
-        key: 'chart-initial',
-        element: (
-          <Chart
-            onRemove={() => this.removeChart('chart-initial')}
-            key="chart-initial"
-          />
-        ),
-      },
+      { key: 'chart-initial' },
     ],
+    timerange: null,
   };
+
+  handleTimeRangeChange = (timerange) => {
+    this.setState({ timerange });
+  }
 
   removeChart = (removeKey) => {
     const { charts } = this.state;
@@ -35,21 +32,24 @@ class App extends React.Component {
       ({ charts }) => ({
         charts: [
           ...charts,
-          {
-            key,
-            element: (
-              <Chart onRemove={() => this.removeChart(key)} key={key} />
-            )
-          },
+          { key },
         ],
       })
     )
   }
 
   render() {
+    const { timerange } = this.state;
+
     return (
       <div>
-        {this.state.charts.map(({ element }) => element)}
+        {this.state.charts.map(({ key }) => (
+          <Chart
+            onRemove={() => this.removeChart(key)} key={key}
+            handleTimeRangeChange={this.handleTimeRangeChange}
+            timerange={timerange}
+          />
+        ))}
         <button onClick={this.addChart}>Add</button>
       </div>
     );
